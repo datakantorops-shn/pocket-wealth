@@ -14,10 +14,223 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          budgeting_type: string | null
+          created_at: string
+          id: string
+          name: string
+          subkategori: string | null
+          type: string
+        }
+        Insert: {
+          budgeting_type?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          subkategori?: string | null
+          type?: string
+        }
+        Update: {
+          budgeting_type?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          subkategori?: string | null
+          type?: string
+        }
+        Relationships: []
+      }
+      category_budgets: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          id: string
+          monthly_limit: number
+          period: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          monthly_limit?: number
+          period: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          monthly_limit?: number
+          period?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_budgets_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      savings_goals: {
+        Row: {
+          created_at: string
+          current_amount: number
+          deadline: string | null
+          id: string
+          name: string
+          target_amount: number
+        }
+        Insert: {
+          created_at?: string
+          current_amount?: number
+          deadline?: string | null
+          id?: string
+          name: string
+          target_amount?: number
+        }
+        Update: {
+          created_at?: string
+          current_amount?: number
+          deadline?: string | null
+          id?: string
+          name?: string
+          target_amount?: number
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          budgeting_type: string | null
+          category_id: string | null
+          created_at: string
+          date: string
+          description: string
+          destination_wallet_id: string | null
+          id: string
+          subkategori: string | null
+          type: string
+          user_id: string | null
+          wallet_id: string | null
+        }
+        Insert: {
+          amount?: number
+          budgeting_type?: string | null
+          category_id?: string | null
+          created_at?: string
+          date?: string
+          description?: string
+          destination_wallet_id?: string | null
+          id?: string
+          subkategori?: string | null
+          type?: string
+          user_id?: string | null
+          wallet_id?: string | null
+        }
+        Update: {
+          amount?: number
+          budgeting_type?: string | null
+          category_id?: string | null
+          created_at?: string
+          date?: string
+          description?: string
+          destination_wallet_id?: string | null
+          id?: string
+          subkategori?: string | null
+          type?: string
+          user_id?: string | null
+          wallet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_destination_wallet_id_fkey"
+            columns: ["destination_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_destination_wallet_id_fkey"
+            columns: ["destination_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          created_at: string
+          id: string
+          initial_balance: number
+          name: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          initial_balance?: number
+          name: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          initial_balance?: number
+          name?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      wallet_balances: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          initial_balance: number | null
+          name: string | null
+          realtime_balance: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          initial_balance?: number | null
+          name?: string | null
+          realtime_balance?: never
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          initial_balance?: number | null
+          name?: string | null
+          realtime_balance?: never
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
