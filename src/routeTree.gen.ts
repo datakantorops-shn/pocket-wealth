@@ -10,12 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdvisorRouteImport } from './routes/advisor'
+import { Route as BudgetRouteImport } from './routes/budget'
+import { Route as OcrRouteImport } from './routes/ocr'
 import { Route as TransaksiRouteImport } from './routes/transaksi'
 import { Route as WalletRouteImport } from './routes/wallet'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvisorRoute = AdvisorRouteImport.update({
+  id: '/advisor',
+  path: '/advisor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BudgetRoute = BudgetRouteImport.update({
+  id: '/budget',
+  path: '/budget',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OcrRoute = OcrRouteImport.update({
+  id: '/ocr',
+  path: '/ocr',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TransaksiRoute = TransaksiRouteImport.update({
@@ -31,30 +49,49 @@ const WalletRoute = WalletRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/advisor': typeof AdvisorRoute
+  '/budget': typeof BudgetRoute
+  '/ocr': typeof OcrRoute
   '/transaksi': typeof TransaksiRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/advisor': typeof AdvisorRoute
+  '/budget': typeof BudgetRoute
+  '/ocr': typeof OcrRoute
   '/transaksi': typeof TransaksiRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/advisor': typeof AdvisorRoute
+  '/budget': typeof BudgetRoute
+  '/ocr': typeof OcrRoute
   '/transaksi': typeof TransaksiRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/transaksi' | '/wallet'
+  fullPaths: '/' | '/advisor' | '/budget' | '/ocr' | '/transaksi' | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/transaksi' | '/wallet'
-  id: '__root__' | '/' | '/transaksi' | '/wallet'
+  to: '/' | '/advisor' | '/budget' | '/ocr' | '/transaksi' | '/wallet'
+  id:
+    | '__root__'
+    | '/'
+    | '/advisor'
+    | '/budget'
+    | '/ocr'
+    | '/transaksi'
+    | '/wallet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdvisorRoute: typeof AdvisorRoute
+  BudgetRoute: typeof BudgetRoute
+  OcrRoute: typeof OcrRoute
   TransaksiRoute: typeof TransaksiRoute
   WalletRoute: typeof WalletRoute
 }
@@ -66,6 +103,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advisor': {
+      id: '/advisor'
+      path: '/advisor'
+      fullPath: '/advisor'
+      preLoaderRoute: typeof AdvisorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/budget': {
+      id: '/budget'
+      path: '/budget'
+      fullPath: '/budget'
+      preLoaderRoute: typeof BudgetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ocr': {
+      id: '/ocr'
+      path: '/ocr'
+      fullPath: '/ocr'
+      preLoaderRoute: typeof OcrRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/transaksi': {
@@ -87,6 +145,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdvisorRoute: AdvisorRoute,
+  BudgetRoute: BudgetRoute,
+  OcrRoute: OcrRoute,
   TransaksiRoute: TransaksiRoute,
   WalletRoute: WalletRoute,
 }
