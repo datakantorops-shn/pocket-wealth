@@ -156,6 +156,11 @@
   --aurora-3: oklch(0.65 0.2 22 / 18%);
 }
 
+@utility num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

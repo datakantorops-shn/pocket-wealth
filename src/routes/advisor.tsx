@@ -104,7 +104,7 @@ function AdvisorPage() {
       const x = +new Date(t.date);
       return x >= +start && x <= +end;
     });
-    if (list.length === 0) return toast.error("Tidak ada transaksi pada periode ini");
+    if (list.length === 0) { toast.error("Tidak ada transaksi pada periode ini"); return; }
 
     const sum = (type: string) =>
       list.filter((t) => t.type === type).reduce((a, t) => a + Number(t.amount), 0);

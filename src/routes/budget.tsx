@@ -88,12 +88,12 @@ function BudgetPage() {
   }, [data, period]);
 
   const submitLimit = async () => {
-    if (!limitCategory) return toast.error("Pilih kategori");
+    if (!limitCategory) { toast.error("Pilih kategori"); return; }
     const value = Number(limitValue);
-    if (!value || value <= 0) return toast.error("Limit harus lebih dari 0");
+    if (!value || value <= 0) { toast.error("Limit harus lebih dari 0"); return; }
     const existing = data?.budgets.find((b) => b.category_id === limitCategory && b.period === period);
     await saveBudget.mutateAsync({
-      id: existing?.id,
+      ...(existing?.id ? { id: existing.id } : {}),
       category_id: limitCategory,
       monthly_limit: value,
       period,
@@ -105,9 +105,9 @@ function BudgetPage() {
   };
 
   const submitGoal = async () => {
-    if (!goalName.trim()) return toast.error("Nama target wajib diisi");
+    if (!goalName.trim()) { toast.error("Nama target wajib diisi"); return; }
     const target = Number(goalTarget);
-    if (!target || target <= 0) return toast.error("Target harus lebih dari 0");
+    if (!target || target <= 0) { toast.error("Target harus lebih dari 0"); return; }
     await saveGoal.mutateAsync({
       name: goalName.trim(),
       target_amount: target,
@@ -124,7 +124,7 @@ function BudgetPage() {
   const submitMove = async () => {
     if (!moveGoal) return;
     const value = Number(moveAmount);
-    if (!value || value <= 0) return toast.error("Nominal harus lebih dari 0");
+    if (!value || value <= 0) { toast.error("Nominal harus lebih dari 0"); return; }
     const next =
       moveMode === "deposit"
         ? Number(moveGoal.current_amount) + value

@@ -78,13 +78,13 @@ function ScoreCard({
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay }}
-      className="glass rounded-2xl p-5"
+      className="glass min-w-0 rounded-2xl p-5"
     >
       <div className="flex items-start justify-between gap-3">
         <p className="text-muted-foreground text-sm font-medium">{label}</p>
         <span className={cn("grid size-9 place-items-center rounded-xl", toneClass)}>{icon}</span>
       </div>
-      <p className="num mt-3 text-2xl font-bold sm:text-[26px]">{value}</p>
+      <p className="num mt-3 truncate text-2xl font-bold sm:text-[26px]">{value}</p>
       {hint && <div className="mt-2 text-xs">{hint}</div>}
     </motion.div>
   );
@@ -196,7 +196,7 @@ function Dashboard() {
       {isLoading || !stats ? (
         <div className="text-muted-foreground py-20 text-center text-sm">Memuat data…</div>
       ) : (
-        <div className="grid gap-5">
+        <div className="grid gap-5 [&>*]:min-w-0">
           {/* Scorecards */}
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <ScoreCard

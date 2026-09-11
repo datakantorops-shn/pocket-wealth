@@ -102,7 +102,11 @@ export function useFinanceMutations() {
     mutationFn: async ({ id, values }: { id: string; values: Partial<TransactionInput> }) => {
       if (usingMockData) {
         const idx = mockStore.transactions.findIndex((t) => t.id === id);
-        if (idx >= 0) mockStore.transactions[idx] = { ...mockStore.transactions[idx], ...values };
+        if (idx >= 0)
+          mockStore.transactions[idx] = {
+            ...(mockStore.transactions[idx] as Transaction),
+            ...values,
+          } as Transaction;
         return;
       }
       const { error } = await supabase.from("transactions").update(values).eq("id", id);

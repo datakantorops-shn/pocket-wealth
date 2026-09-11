@@ -94,10 +94,10 @@ export function TransactionDialog({
 
   const submit = async () => {
     const value = Number(amount);
-    if (!value || value <= 0) return toast.error("Nominal harus lebih dari 0");
-    if (!walletId) return toast.error("Pilih dompet sumber");
+    if (!value || value <= 0) { toast.error("Nominal harus lebih dari 0"); return; }
+    if (!walletId) { toast.error("Pilih dompet sumber"); return; }
     if (type === "transfer" && (!destWalletId || destWalletId === walletId))
-      return toast.error("Pilih dompet tujuan yang berbeda");
+      { toast.error("Pilih dompet tujuan yang berbeda"); return; }
 
     const cat = data?.categories.find((c) => c.id === categoryId);
     const payload: TransactionInput = {
