@@ -93,7 +93,7 @@ function BudgetPage() {
     if (!value || value <= 0) { toast.error("Limit harus lebih dari 0"); return; }
     const existing = data?.budgets.find((b) => b.category_id === limitCategory && b.period === period);
     await saveBudget.mutateAsync({
-      id: existing?.id,
+      ...(existing?.id ? { id: existing.id } : {}),
       category_id: limitCategory,
       monthly_limit: value,
       period,
