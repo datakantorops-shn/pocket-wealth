@@ -84,7 +84,7 @@ function OcrPage() {
   };
 
   const scan = async () => {
-    if (!preview) return toast.error("Upload gambar dulu");
+    if (!preview) { toast.error("Upload gambar dulu"); return; }
     setLoading(true);
     setReceipt(null);
     setRows(null);
@@ -133,7 +133,7 @@ function OcrPage() {
       receipt.items.reduce((a, i) => a + Number(i.price), 0) +
         Number(receipt.service_charge ?? 0) +
         Number(receipt.tax ?? 0);
-    if (!total) return toast.error("Nominal total tidak terbaca");
+    if (!total) { toast.error("Nominal total tidak terbaca"); return; }
     await createTransaction.mutateAsync(
       buildTx(receipt.store ? `Belanja ${receipt.store}` : "Belanja struk", total, "pengeluaran", receipt.date),
     );
@@ -143,7 +143,7 @@ function OcrPage() {
   };
 
   const saveReceiptItemized = async () => {
-    if (!receipt || receipt.items.length === 0) return toast.error("Tidak ada rincian item");
+    if (!receipt || receipt.items.length === 0) { toast.error("Tidak ada rincian item"); return; }
     const payload = receipt.items.map((i) =>
       buildTx(`${receipt.store ? receipt.store + " – " : ""}${i.name}`, Number(i.price), "pengeluaran", receipt.date),
     );

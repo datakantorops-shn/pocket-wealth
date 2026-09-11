@@ -68,7 +68,7 @@ function WalletPage() {
   const total = rows.reduce((a, w) => a + w.realtime_balance, 0);
 
   const submit = async () => {
-    if (!name.trim()) return toast.error("Nama dompet wajib diisi");
+    if (!name.trim()) { toast.error("Nama dompet wajib diisi"); return; }
     await createWallet.mutateAsync({ name: name.trim(), initial_balance: Number(initial) || 0 });
     toast.success("Dompet ditambahkan");
     setName("");
