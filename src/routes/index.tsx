@@ -196,7 +196,7 @@ function Dashboard() {
       {isLoading || !stats ? (
         <div className="text-muted-foreground py-20 text-center text-sm">Memuat data…</div>
       ) : (
-        <div className="grid gap-5">
+        <div className="grid gap-5 [&>*]:min-w-0">
           {/* Scorecards */}
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <ScoreCard
