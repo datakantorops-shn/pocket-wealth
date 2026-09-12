@@ -103,7 +103,7 @@ function WalletPage() {
       title="Wallet / Dompet"
       subtitle={`Total saldo ${formatIDR(total)}`}
       actions={
-        <Button className="gap-2" onClick={() => setOpen(true)}>
+        <Button className="gap-2" onClick={openCreate}>
           <Plus className="size-4" /> <span className="hidden sm:inline">Dompet</span>
         </Button>
       }
@@ -152,17 +152,22 @@ function WalletPage() {
                 </div>
               </div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-destructive mt-3 gap-2"
-                onClick={async () => {
-                  await deleteWallet.mutateAsync(w.id);
-                  toast.success(`Dompet ${w.name} dihapus`);
-                }}
-              >
-                <Trash2 className="size-4" /> Hapus dompet
-              </Button>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => openEdit(w)}>
+                  <Pencil className="size-4" /> Edit
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-destructive gap-2"
+                  onClick={async () => {
+                    await deleteWallet.mutateAsync(w.id);
+                    toast.success(`Dompet ${w.name} dihapus`);
+                  }}
+                >
+                  <Trash2 className="size-4" /> Hapus
+                </Button>
+              </div>
             </GlassPanel>
           );
         })}
@@ -171,7 +176,7 @@ function WalletPage() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="glass sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>Tambah Dompet</DialogTitle>
+            <DialogTitle>{editingId ? "Edit Dompet" : "Tambah Dompet"}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
             <div className="grid gap-2">
