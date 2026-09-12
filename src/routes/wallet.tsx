@@ -70,11 +70,32 @@ function WalletPage() {
 
   const submit = async () => {
     if (!name.trim()) { toast.error("Nama dompet wajib diisi"); return; }
-    await createWallet.mutateAsync({ name: name.trim(), initial_balance: Number(initial) || 0 });
-    toast.success("Dompet ditambahkan");
+    const values = { name: name.trim(), initial_balance: Number(initial) || 0 };
+    if (editingId) {
+      await updateWallet.mutateAsync({ id: editingId, values });
+      toast.success("Dompet diperbarui");
+    } else {
+      await createWallet.mutateAsync(values);
+      toast.success("Dompet ditambahkan");
+    }
     setName("");
     setInitial("");
+    setEditingId(null);
     setOpen(false);
+  };
+
+  const openCreate = () => {
+    setEditingId(null);
+    setName("");
+    setInitial("");
+    setOpen(true);
+  };
+
+  const openEdit = (w: { id: string; name: string; initial_balance: number }) => {
+    setEditingId(w.id);
+    setName(w.name);
+    setInitial(String(Number(w.initial_balance) || 0));
+    setOpen(true);
   };
 
   return (
