@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Plus, Trash2, Wallet as WalletIcon } from "lucide-react";
+import { Pencil, Plus, Trash2, Wallet as WalletIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, GlassPanel } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -38,8 +38,9 @@ export const Route = createFileRoute("/wallet")({
 
 function WalletPage() {
   const { data } = useFinance();
-  const { createWallet, deleteWallet } = useFinanceMutations();
+  const { createWallet, updateWallet, deleteWallet } = useFinanceMutations();
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [initial, setInitial] = useState("");
 
@@ -69,11 +70,32 @@ function WalletPage() {
 
   const submit = async () => {
     if (!name.trim()) { toast.error("Nama dompet wajib diisi"); return; }
-    await createWallet.mutateAsync({ name: name.trim(), initial_balance: Number(initial) || 0 });
-    toast.success("Dompet ditambahkan");
+    const values = { name: name.trim(), initial_balance: Number(initial) || 0 };
+    if (editingId) {
+      await updateWallet.mutateAsync({ id: editingId, values });
+      toast.success("Dompet diperbarui");
+    } else {
+      await createWallet.mutateAsync(values);
+      toast.success("Dompet ditambahkan");
+    }
     setName("");
     setInitial("");
+    setEditingId(null);
     setOpen(false);
+  };
+
+  const openCreate = () => {
+    setEditingId(null);
+    setName("");
+    setInitial("");
+    setOpen(true);
+  };
+
+  const openEdit = (w: { id: string; name: string; initial_balance: number }) => {
+    setEditingId(w.id);
+    setName(w.name);
+    setInitial(String(Number(w.initial_balance) || 0));
+    setOpen(true);
   };
 
   return (
@@ -81,7 +103,7 @@ function WalletPage() {
       title="Wallet / Dompet"
       subtitle={`Total saldo ${formatIDR(total)}`}
       actions={
-        <Button className="gap-2" onClick={() => setOpen(true)}>
+        <Button className="gap-2" onClick={openCreate}>
           <Plus className="size-4" /> <span className="hidden sm:inline">Dompet</span>
         </Button>
       }
@@ -130,17 +152,22 @@ function WalletPage() {
                 </div>
               </div>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-destructive mt-3 gap-2"
-                onClick={async () => {
-                  await deleteWallet.mutateAsync(w.id);
-                  toast.success(`Dompet ${w.name} dihapus`);
-                }}
-              >
-                <Trash2 className="size-4" /> Hapus dompet
-              </Button>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => openEdit(w)}>
+                  <Pencil className="size-4" /> Edit
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-destructive gap-2"
+                  onClick={async () => {
+                    await deleteWallet.mutateAsync(w.id);
+                    toast.success(`Dompet ${w.name} dihapus`);
+                  }}
+                >
+                  <Trash2 className="size-4" /> Hapus
+                </Button>
+              </div>
             </GlassPanel>
           );
         })}
@@ -149,7 +176,7 @@ function WalletPage() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="glass sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>Tambah Dompet</DialogTitle>
+            <DialogTitle>{editingId ? "Edit Dompet" : "Tambah Dompet"}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
             <div className="grid gap-2">

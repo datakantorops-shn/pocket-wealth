@@ -97,6 +97,34 @@ export function useFinanceMutations() {
     onSuccess: invalidate,
   });
 
+  const updateWallet = useMutation({
+    mutationFn: async ({
+      id,
+      values,
+    }: {
+      id: string;
+      values: { name?: string; initial_balance?: number };
+    }) => {
+      const { error } = await supabase.from("wallets").update(values).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: invalidate,
+  });
+
+  const createCategory = useMutation({
+    mutationFn: async (values: {
+      name: string;
+      type: "pengeluaran" | "pemasukan";
+      subkategori: string;
+      budgeting_type: string | null;
+    }) => {
+      const { data, error } = await supabase.from("categories").insert(values).select();
+      if (error) throw error;
+      return (data ?? []) as Category[];
+    },
+    onSuccess: invalidate,
+  });
+
   const deleteWallet = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("wallets").delete().eq("id", id);
@@ -163,7 +191,9 @@ export function useFinanceMutations() {
     updateTransaction,
     deleteTransaction,
     createWallet,
+    updateWallet,
     deleteWallet,
+    createCategory,
     saveBudget,
     saveGoal,
     deleteGoal,
