@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Plus, Trash2, Wallet as WalletIcon } from "lucide-react";
+import { Pencil, Plus, Trash2, Wallet as WalletIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, GlassPanel } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -38,8 +38,9 @@ export const Route = createFileRoute("/wallet")({
 
 function WalletPage() {
   const { data } = useFinance();
-  const { createWallet, deleteWallet } = useFinanceMutations();
+  const { createWallet, updateWallet, deleteWallet } = useFinanceMutations();
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [initial, setInitial] = useState("");
 
