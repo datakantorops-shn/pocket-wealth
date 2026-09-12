@@ -187,11 +187,8 @@ function Dashboard() {
         </Button>
       }
     >
-      {data?.mock && (
-        <div className="glass mb-5 rounded-2xl p-4 text-sm">
-          Menampilkan data contoh interaktif. Semua perubahan tersimpan sementara di perangkat ini.
-        </div>
-      )}
+
+
 
       {isLoading || !stats ? (
         <div className="text-muted-foreground py-20 text-center text-sm">Memuat data…</div>
